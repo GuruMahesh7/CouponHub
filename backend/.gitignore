@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+
+# Build output (for React frontend or backend)
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE/editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+*.log
+
+# Optional: coverage reports (if using testing)
+coverage/
+
+# Optional: next.js or other serverless builds
+.next/
+out/
