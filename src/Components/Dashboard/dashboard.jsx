@@ -12,7 +12,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await axios.get("https://backend-1-9gjf.onrender.com/api/coupons");
+        const response = await axios.get("https://backend-1-9gjf.onrender.com/api/coupons"); 
         setCouponsdata(response.data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
