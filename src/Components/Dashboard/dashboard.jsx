@@ -12,7 +12,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/coupons");
+        const response = await axios.get("https://backend-1-9gjf.onrender.com/api/coupons");
         setCouponsdata(response.data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
@@ -47,7 +47,7 @@ function Dashboard() {
   if (!confirm) return;
 
   try {
-    await axios.delete(`http://localhost:5000/api/coupons/${id}`);
+    await axios.delete(`https://backend-1-9gjf.onrender.com/api/coupons/${id}`);
     setCouponsdata((prev) => prev.filter((c) => c._id !== id));
     alert("Coupon deleted successfully!");
   } catch (err) {
