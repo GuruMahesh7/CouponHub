@@ -15,7 +15,7 @@ function EditCoupon() {
   useEffect(() => {
     const fetchCoupon = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/coupons/${id}`);
+        const res = await axios.get(`https://backend-1-9gjf.onrender.com/api/coupons/${id}`);
         setForm({
           code: res.data.code,
           discountValue: res.data.discountValue,
@@ -37,7 +37,7 @@ function EditCoupon() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/coupons/${id}`, form);
+      await axios.put(`https://backend-1-9gjf.onrender.com/api/coupons/${id}`, form);
       alert("Coupon updated!");
       navigate("/dashboard");
     } catch (err) {
