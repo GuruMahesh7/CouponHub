@@ -36,7 +36,7 @@ function Analytics() {
 });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/coupons")
+    axios.get("https://backend-1-9gjf.onrender.com/api/coupons")
       .then(res => setCoupons(res.data))
       .catch(err => console.error("Error fetching coupons:", err));
 
