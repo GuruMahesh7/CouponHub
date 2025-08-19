@@ -11,7 +11,7 @@ function ViewUsers() {
    useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users");
+        const response = await axios.get("https://backend-1-9gjf.onrender.com/api/users");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
