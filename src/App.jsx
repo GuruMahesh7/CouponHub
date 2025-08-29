@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard></Dashboard>}>Dashboard</Route>
         <Route path="/dashboard" element={<Dashboard></Dashboard>}>Dashboard</Route>
-        <Route path="/dashboard/viewusers/:couponCode" element={<ViewUsers />} />
+        <Route path="/dashboard/viewusers/:id" element={<ViewUsers />} />
         <Route path="/dashboard/editcoupon/:id" element={<EditCoupon />} />
         <Route path="/createcoupon" element={<Createcoupon></Createcoupon>}>Create Coupon</Route>
         <Route path="/analytics" element={<Analytics></Analytics>}>Analytics</Route>

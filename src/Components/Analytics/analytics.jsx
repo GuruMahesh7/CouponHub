@@ -12,7 +12,7 @@ import {
   Legend,
   Title
 } from 'chart.js';
-import { Bar, Pie, Doughnut, Line } from 'react-chartjs-2';
+import {  Pie, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -51,7 +51,7 @@ function Analytics() {
 
     coupons.forEach(coupon => {
       const discountAmount = (coupon.discountValue || 0) / 100;
-      const assumedPrice = 100; // Assumed fixed price for simplicity
+      const assumedPrice = 100; 
       totalRevenue += coupon.usedCount * discountAmount * assumedPrice;
 
       totalDiscount += coupon.discountValue || 0;
@@ -62,7 +62,7 @@ function Analytics() {
     const avgDiscount = totalDiscount / coupons.length;
     const usageRate = (totalUsed / totalMax) * 100;
 
-    // Simulated conversion rate: 87.5% if >80% used, else proportionally lower
+  
     const conversionRate = usageRate > 80 ? 87.5 : usageRate + 10;
 
     setStats({
@@ -73,11 +73,6 @@ function Analytics() {
     });
   }
 }, [coupons]);
-
-  
-
-  // Utility functions
- 
 
   const getStatusCounts = () => {
     let active = 0, expired = 0, maxed = 0;
@@ -90,10 +85,7 @@ function Analytics() {
     return { active, expired, maxed };
   };
 
-  // Chart 1: Daily Usage (Bar)
  
-
-  // Chart 2: Active vs Expired vs Maxed (Pie)
   const status = getStatusCounts();
   const pieData = {
     labels: ['Active', 'Expired', 'Max Usage Reached'],
@@ -103,9 +95,6 @@ function Analytics() {
     }]
   };
 
-  // Chart 3: Redemption Trend (Line)
-
-  // Chart 4: Usage by Code (Doughnut)
   const doughnutData = {
     labels: coupons.map(c => c.code),
     datasets: [{
@@ -125,28 +114,28 @@ function Analytics() {
   </div>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    {/* Revenue Impact */}
+    
     <div className="bg-green-50 p-4 rounded-xl border border-green-100">
       <h4 className="text-sm font-medium text-green-800 flex items-center gap-1">💲 Revenue Impact</h4>
       <p className="text-2xl font-bold text-green-900 mt-1">₹{stats.revenueImpact}</p>
       <p className="text-xs text-green-700 mt-1">Estimated savings provided</p>
     </div>
 
-    {/* Avg Discount */}
+    
     <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
       <h4 className="text-sm font-medium text-blue-800 flex items-center gap-1">% Avg. Discount</h4>
       <p className="text-2xl font-bold text-blue-900 mt-1">{stats.avgDiscount}%</p>
       <p className="text-xs text-blue-700 mt-1">Average discount offered</p>
     </div>
 
-    {/* Usage Rate */}
+    
     <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
       <h4 className="text-sm font-medium text-purple-800 flex items-center gap-1">📈 Usage Rate</h4>
       <p className="text-2xl font-bold text-purple-900 mt-1">{stats.usageRate}%</p>
       <p className="text-xs text-purple-700 mt-1">Of total available uses</p>
     </div>
 
-    {/* Conversion Rate */}
+ 
     <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-100">
       <h4 className="text-sm font-medium text-yellow-800 flex items-center gap-1">↪ Conversion Rate</h4>
       <p className="text-2xl font-bold text-yellow-900 mt-1">{stats.conversionRate}%</p>
@@ -157,14 +146,14 @@ function Analytics() {
 
 
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {/* Pie Chart */}
+    
     <div className="bg-white p-4 rounded-xl shadow min-h-[300px]">
       <h2 className="text-lg font-semibold mb-4">🥧 Coupon Status</h2>
       <div className="h-64 md:h-80">
         <Pie data={pieData} options={{ responsive: true, maintainAspectRatio: false }} />
       </div>
     </div>
-    {/* Doughnut Chart */}
+    
     <div className="bg-white p-4 rounded-xl shadow min-h-[300px]">
       <h2 className="text-lg font-semibold mb-4">🍩 Usage by Coupon Code</h2>
       <div className="h-64 md:h-80">
@@ -191,7 +180,7 @@ function Analytics() {
       <tbody>
         {coupons.map((coupon) => {
           const successRate = ((coupon.usedCount / coupon.maxUsage) * 100).toFixed(0);
-          const revenue = (coupon.usedCount * coupon.discountValue * 100) / 100; // ₹100 assumption
+          const revenue = (coupon.usedCount * coupon.discountValue * 100) / 100; 
 
           return (
             <tr key={coupon.code} className="border-t">

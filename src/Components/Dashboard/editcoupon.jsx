@@ -20,7 +20,7 @@ function EditCoupon() {
           code: res.data.code,
           discountValue: res.data.discountValue,
           maxUsage: res.data.maxUsage,
-          expiresAt: res.data.expiresAt?.split("T")[0], // format date for input
+          expiresAt: res.data.expiresAt?.split("T")[0], 
         });
       } catch (err) {
         console.error(err);

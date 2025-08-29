@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 function Sidebar() {
   return (
-    // Sidebar wrapper — hidden on small screens, visible on md+
     <aside className="hidden md:flex flex-col w-64 h-screen fixed top-0 left-0 bg-white shadow z-20">
       <div className="p-6 border-b">
         <h1 className="text-xl font-bold text-purple-700">CouponHub</h1>
