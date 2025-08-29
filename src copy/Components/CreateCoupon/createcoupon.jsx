@@ -73,9 +73,7 @@ function Createcoupon() {
     e.preventDefault();
 
     try {
-
-      const response = await axios.post("https://backend-1-9gjf.onrender.com/api/coupons/createcoupon", form);
-
+      const response = await axios.post("http://localhost:5000/api/coupons", form);
       alert(`Coupon "${response.data.code}" created successfully!`);
     } catch (error) {
       console.error("Error creating coupon:", error);

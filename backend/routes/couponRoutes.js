@@ -21,12 +21,13 @@ router.get("/users/:id", async (req, res) => {
     _id: user._id,
     name: user.name,
     email: user.email,
+    redeemedAt: user.createdAt,
   }));
   res.json(userData);
 });
 
 // Create a coupon
-router.post("/", async (req, res) => {
+router.post("/createcoupon", async (req, res) => {
   const newCoupon = new Coupon(req.body);
   await newCoupon.save();
   res.status(201).json(newCoupon);
