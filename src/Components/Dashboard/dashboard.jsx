@@ -125,7 +125,7 @@ function Dashboard() {
                   <span>
                     👥 Used: {coupon.usedCount}/{coupon.maxUsage}
                   </span>
-                  <span>📅 Expires: {coupon.expiresAt.split("T")[0]}</span>
+{/*                   <span>📅 Expires: {coupon.expiresAt.split("T")[0]}</span> */}
                   <span>
                     🔁 Remaining: {coupon.maxUsage - coupon.usedCount} uses
                   </span>
