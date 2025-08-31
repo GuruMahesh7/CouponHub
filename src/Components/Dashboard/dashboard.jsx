@@ -122,7 +122,9 @@ function Dashboard() {
                     </span>
                   )}
                   <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                    {coupon.discountValue}% OFF
+                    {coupon.discountType === "percentage"
+                      ? `${coupon.discountValue}% OFF`
+                      : `₹${coupon.discountValue} OFF`}
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-600">
