@@ -43,6 +43,10 @@ function Createcoupon() {
   })
 }
 
+  function discountTypesel(e) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
   function setmaxusage(e){
     setMaxUsage(e.target.value)
     setForm({
@@ -113,12 +117,28 @@ function Createcoupon() {
               />
             </div>
 
+            {/* Discount Type */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Discount Type
+              </label>
+              <select
+                name="discountType"
+                className="w-full border rounded px-4 py-2"
+                onChange={discountTypesel}
+                value={form.discountType}
+              >
+                <option value="percentage">Percentage (%)</option>
+                <option value="flat">Flat (₹)</option>
+              </select>
+            </div>
+
             <div className="space-y-2">
               <label
                 htmlFor="discount"
                 className="block text-sm font-medium text-gray-700"
               >
-                Discount (%)
+                Discount {form.discountType === "percentage" ? "(%)" : "(₹)"}
               </label>
               <input
                 type="number"
