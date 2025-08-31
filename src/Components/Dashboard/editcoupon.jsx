@@ -91,6 +91,7 @@ function EditCoupon() {
             value={form.expiresAt}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
+            min={new Date().toISOString().split("T")[0]}
             required
           />
         </div>

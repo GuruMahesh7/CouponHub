@@ -11,6 +11,45 @@ router.get("/", async (req, res) => {
   res.json(data);
 });
 
+// GET /api/analytics
+router.get("/analytics", async (req, res) => {
+  try {
+    const coupons = await Coupon.find();
+    const redemptions = await Redemption.find()  //.populate("coupon user");
+
+    // Build stats
+    const couponStats = coupons.map((c) => {
+      const couponRedemptions = redemptions.filter(r => r.coupon.equals(c._id));
+      
+      const usedCount = couponRedemptions.length;
+      const totalDiscountGiven = couponRedemptions.reduce((sum, r) => sum + r.discountApplied, 0);
+      const totalRevenueImpact = couponRedemptions.reduce((sum, r) => sum + r.finalBillAmount, 0);
+
+      return {
+        code: c.code,
+        discountValue: c.discountValue,
+        maxUsage: c.maxUsage,
+        usedCount,
+        totalDiscountGiven,
+        totalRevenueImpact,
+        status: (c.expiresAt < new Date() || usedCount >= c.maxUsage) ? "expired" : "active"
+      };
+    });
+
+    res.json({
+      coupons: couponStats,
+      summary: {
+        totalCoupons: coupons.length,
+        totalRedemptions: redemptions.length,
+        totalDiscounts: couponStats.reduce((s, c) => s + c.totalDiscountGiven, 0),
+        totalRevenue: couponStats.reduce((s, c) => s + c.totalRevenueImpact, 0),
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get all users who have redeemed coupons
 router.get("/users/:id", async (req, res) => {
   const {id}= req.params
@@ -37,14 +76,30 @@ router.post("/createcoupon", async (req, res) => {
 router.post("/redeemption", async (req, res) => {
   try {
     const { name, email, billAmount, couponCode } = req.body;
-    const user = await User.create({ name, email, billAmount, couponCode });
-    
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({ name, email, billAmount });
+    }
+    // const user = await User.create({ name, email, billAmount, couponCode });
+
     const coupon = await Coupon.findOne({ code: couponCode });
     if (!coupon) return res.status(404).json({ message: "Coupon not found" });
 
-    
     if (coupon.expiryDate < new Date()) {
       return res.status(400).json({ message: "Coupon expired" });
+    }
+
+    // Check if this user already redeemed this coupon ❌
+    const alreadyRedeemed = await Redemption.findOne({
+      user: user._id,
+      coupon: coupon._id,
+    });
+    if (alreadyRedeemed) {
+      return res.status(400).json({
+        message: "You have already used this coupon!",
+        success: false,
+      });
     }
 
     const discountApplied =
@@ -56,17 +111,29 @@ router.post("/redeemption", async (req, res) => {
     const newRedemption = new Redemption({
       user: user._id,
       coupon: coupon._id,
+      originalBillAmount: billAmount,
       discountApplied,
       finalBillAmount: finalBill,
     });
     await newRedemption.save();
 
-    res.status(201).json({ message: "Coupon redeemed successfully", success: true, finalAmount: finalBill});
+    coupon.usedCount = (coupon.usedCount || 0) + 1;
+    if (coupon.usedCount >= coupon.maxUsage) {
+      coupon.status = "expired";
+    }
+    await coupon.save();
+
+    res
+      .status(201)
+      .json({
+        message: "Coupon redeemed successfully",
+        success: true,
+        finalAmount: finalBill,
+      });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
-
 
 // DELETE a single coupon by ID
 router.delete('/:id', async (req, res) => {
@@ -94,8 +161,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
-
 // Update coupon
 router.put("/:id", async (req, res) => {
   try {
@@ -106,6 +171,9 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ error: "Update failed", message:err.message });
   }
 });
+
+
+
 
 
 

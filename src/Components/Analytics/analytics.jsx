@@ -36,51 +36,34 @@ function Analytics() {
 });
 
   useEffect(() => {
-
-    axios.get("https://backend-1-9gjf.onrender.com/api/coupons")
-      .then(res => setCoupons(res.data))
-      .catch(err => console.error("Error fetching coupons:", err));
-
-
+    axios
+      .get("https://backend-1-9gjf.onrender.com/api/coupons/analytics")
+      .then((res) => {
+        setCoupons(res.data.coupons);
+        setStats({
+          revenueImpact: res.data.summary.totalRevenue,
+          avgDiscount: (
+            res.data.summary.totalDiscounts / res.data.summary.totalRedemptions
+          ).toFixed(1),
+          usageRate: (
+            (res.data.summary.totalRedemptions /
+              res.data.coupons.reduce((s, c) => s + c.maxUsage, 0)) *
+            100
+          ).toFixed(1),
+          conversionRate: (
+            (res.data.summary.totalRedemptions /
+              res.data.summary.totalCoupons) *
+            100
+          ).toFixed(1),
+        });
+      })
+      .catch((err) => console.error("Error fetching analytics:", err));
   }, []);
-
-  useEffect(() => {
-  if (coupons.length > 0) {
-    let totalRevenue = 0;
-    let totalDiscount = 0;
-    let totalUsed = 0;
-    let totalMax = 0;
-
-    coupons.forEach(coupon => {
-      const discountAmount = (coupon.discountValue || 0) / 100;
-      const assumedPrice = 100; 
-      totalRevenue += coupon.usedCount * discountAmount * assumedPrice;
-
-      totalDiscount += coupon.discountValue || 0;
-      totalUsed += coupon.usedCount;
-      totalMax += coupon.maxUsage || 0;
-    });
-
-    const avgDiscount = totalDiscount / coupons.length;
-    const usageRate = (totalUsed / totalMax) * 100;
-
   
-    const conversionRate = usageRate > 80 ? 87.5 : usageRate + 10;
-
-    setStats({
-      revenueImpact: totalRevenue.toFixed(0),
-      avgDiscount: avgDiscount.toFixed(1),
-      usageRate: usageRate.toFixed(1),
-      conversionRate: conversionRate.toFixed(1),
-    });
-  }
-}, [coupons]);
-
   const getStatusCounts = () => {
     let active = 0, expired = 0, maxed = 0;
-    const now = new Date();
     coupons.forEach(c => {
-      if (new Date(c.expiresAt) < now) expired++;
+      if (c.status==="expired") expired++;
       else if (c.usedCount >= c.maxUsage) maxed++;
       else active++;
     });
@@ -182,13 +165,13 @@ function Analytics() {
       <tbody>
         {coupons.map((coupon) => {
           const successRate = ((coupon.usedCount / coupon.maxUsage) * 100).toFixed(0);
-          const revenue = (coupon.usedCount * coupon.discountValue * 100) / 100; 
+          const revenue = coupon.totalRevenueImpact || 0; 
 
           return (
             <tr key={coupon.code} className="border-t">
               <td className="py-3 px-3 font-medium">{coupon.code}</td>
-              <td className="py-3 px-3">{coupon.discountValue}%</td>
-              <td className="py-3 px-3">{coupon.usedCount}/{coupon.maxUsage}</td>
+              <td className="py-3 px-3">{coupon.discountValue}</td>
+              <td className="py-3 px-3">{coupon.usedCount}</td>
               <td className="py-3 px-3 w-48">
                 <div className="flex items-center gap-2">
                   <div className="w-full bg-gray-200 h-2 rounded">

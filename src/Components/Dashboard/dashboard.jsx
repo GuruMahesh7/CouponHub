@@ -31,10 +31,13 @@ function Dashboard() {
     for (let i = 0; i < couponsdata.length; i++) {
       const coupon = couponsdata[i];
       usage += coupon.usedCount;
-      if (coupon.status === "active") {
-        active++;
-      } else if (coupon.status === "expired") {
+      if (
+        new Date(coupon.expiresAt) < new Date() ||
+        coupon.usedCount >= coupon.maxUsage
+      ) {
         expired++;
+      } else {
+        active++;
       }
     }
 
@@ -108,13 +111,14 @@ function Dashboard() {
               <div className="flex-1 w-full">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                   <h3 className="font-semibold text-lg">{coupon.code}</h3>
-                  {coupon.status === "active" ? (
-                    <span className="bg-black text-white text-xs px-2 py-0.5 rounded-full">
-                      {coupon.status}
+                  {new Date(coupon.expiresAt) < new Date() ||
+                  coupon.usedCount >= coupon.maxUsage ? (
+                    <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                      expired
                     </span>
                   ) : (
-                    <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                      {coupon.status}
+                    <span className="bg-black text-white text-xs px-2 py-0.5 rounded-full">
+                      active
                     </span>
                   )}
                   <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">
@@ -125,7 +129,9 @@ function Dashboard() {
                   <span>
                     👥 Used: {coupon.usedCount}/{coupon.maxUsage}
                   </span>
-                  <span>📅 Expires: {coupon.expiresAt.split("T")[0]}</span>
+                  <span>
+                    📅 Expires:{new Date(coupon.expiresAt).toISOString().split("T")[0]}
+                  </span>
                   <span>
                     🔁 Remaining: {coupon.maxUsage - coupon.usedCount} uses
                   </span>
