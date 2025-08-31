@@ -22,7 +22,7 @@ function Createcoupon() {
     setDiscountValue(e.target.value)
     setForm({
     code: couponCode,
-    discountType: "percentage",
+    discountType: discountType,
     discountValue: discountValue,
     maxUsage: maxUsage,
     usedCount: 0,
@@ -35,7 +35,7 @@ function Createcoupon() {
     setCouponCode(e.target.value)
     setForm({
     code: couponCode,
-    discountType: "percentage",
+    discountType: discountType,
     discountValue: discountValue,
     maxUsage: maxUsage,
     usedCount: 0,
@@ -61,7 +61,7 @@ function Createcoupon() {
     setMaxUsage(e.target.value)
     setForm({
     code: couponCode,
-    discountType: "percentage",
+    discountType: discountType,
     discountValue: discountValue,
     maxUsage: maxUsage,
     usedCount: 0,
@@ -74,7 +74,7 @@ function Createcoupon() {
     setExpiresAt(e.target.value)
     setForm({
     code: couponCode,
-    discountType: "percentage",
+    discountType: discountType,
     discountValue: discountValue,
     maxUsage: maxUsage,
     usedCount: 0,
