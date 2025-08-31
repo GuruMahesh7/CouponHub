@@ -5,6 +5,7 @@ import axios from 'axios';
 function Createcoupon() {
   const [discountValue, setDiscountValue]=useState(0)
   const [couponCode, setCouponCode]=useState("")
+  const [discountType, setDiscountType]=useState("percentage") 
   const [maxUsage, setMaxUsage]=useState(1)
   const [expiresAt, setExpiresAt]=useState("")
   const [form, setForm] = useState({
@@ -44,7 +45,16 @@ function Createcoupon() {
 }
 
   function discountTypesel(e) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setDiscountType(e.target.value);
+    setForm({
+      code: couponCode,
+      discountType: discountType,
+      discountValue: discountValue,
+      maxUsage: maxUsage,
+      usedCount: 0,
+      expiresAt: new Date().toISOString(),
+      status: "active"
+    });
   }
 
   function setmaxusage(e){
