@@ -136,7 +136,7 @@ function Createcoupon() {
                 name="discountType"
                 className="w-full border rounded px-4 py-2"
                 onChange={discountTypesel}
-                value={form.discountType}
+                value={discountType}
               >
                 <option value="percentage">Percentage (%)</option>
                 <option value="flat">Flat (₹)</option>
@@ -148,7 +148,7 @@ function Createcoupon() {
                 htmlFor="discount"
                 className="block text-sm font-medium text-gray-700"
               >
-                Discount {form.discountType === "percentage" ? "(%)" : "(₹)"}
+                Discount {discountType === "percentage" ? "(%)" : "(₹)"}
               </label>
               <input
                 type="number"
