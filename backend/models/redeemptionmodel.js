@@ -4,7 +4,7 @@ const redemptionSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "userRegister",
       required: true,
     },
     coupon: {
@@ -14,15 +14,7 @@ const redemptionSchema = new mongoose.Schema(
     },
     redeemedAt: {
       type: Date,
-      default: Date.now,
-    },
-    discountApplied: {
-      type: Number, 
-      required: true,
-    },
-    finalBillAmount: {
-      type: Number,
-      required: true,
+      default: Date.now, 
     },
   },
   { timestamps: true }

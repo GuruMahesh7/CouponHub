@@ -12,7 +12,9 @@ function Dashboard() {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await axios.get("https://backend-1-9gjf.onrender.com/api/coupons"); 
+        const response = await axios.get(
+          "https://backend-1-9gjf.onrender.com/api/coupons"
+        ); 
         setCouponsdata(response.data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
@@ -51,7 +53,7 @@ function Dashboard() {
   if (!confirm) return;
 
   try {
-    await axios.delete(`https://backend-1-9gjf.onrender.com/api/coupons/${id}`);
+    await axios.delete(`http://localhost:5000/api/coupons/${id}`);
     setCouponsdata((prev) => prev.filter((c) => c._id !== id));
     alert("Coupon deleted successfully!");
   } catch (err) {
@@ -122,7 +124,9 @@ function Dashboard() {
                     </span>
                   )}
                   <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                    {coupon.discountValue}% OFF
+                    {coupon.discountType === "percentage"
+                      ? `${coupon.discountValue}% OFF`
+                      : `₹${coupon.discountValue} OFF`}
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-600">

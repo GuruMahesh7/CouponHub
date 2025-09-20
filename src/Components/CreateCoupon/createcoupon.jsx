@@ -2,9 +2,11 @@ import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 
+
 function Createcoupon() {
-  const [discountValue, setDiscountValue]=useState(0)
+  // const [discountValue, setDiscountValue]=useState(0)
   const [couponCode, setCouponCode]=useState("")
+  // const [discountType, setDiscountType]=useState("percentage") 
   const [maxUsage, setMaxUsage]=useState(1)
   const [expiresAt, setExpiresAt]=useState("")
   const [form, setForm] = useState({
@@ -17,54 +19,67 @@ function Createcoupon() {
     status: "active"
   });
 
-  function setdiscountValue(e){
-    setDiscountValue(e.target.value)
-    setForm({
-    code: couponCode,
-    discountType: "percentage",
-    discountValue: discountValue,
-    maxUsage: maxUsage,
-    usedCount: 0,
-    expiresAt: new Date().toISOString(),
-    status: "active"
-  })
-}
+//   function setdiscountValue(e){
+//     setDiscountValue(e.target.value)
+//     setForm({
+//       code: couponCode,
+//       discountType: discountType,
+//       discountValue: discountValue,
+//       maxUsage: maxUsage,
+//       usedCount: 0,
+//       expiresAt: expiresAt,
+//       status: "active",
+//     });
+// }
 
   function setcouponCode(e){
     setCouponCode(e.target.value)
     setForm({
-    code: couponCode,
-    discountType: "percentage",
-    discountValue: discountValue,
-    maxUsage: maxUsage,
-    usedCount: 0,
-    expiresAt: new Date().toISOString(),
-    status: "active"
-  })
+      code: couponCode,
+      // discountType: discountType,
+      // discountValue: discountValue,
+      maxUsage: maxUsage,
+      usedCount: 0,
+      expiresAt: expiresAt,
+      status: "active",
+    });
 }
+
+// function discountTypesel(e) {
+//     setDiscountType(e.target.value);
+//     setForm({
+//       code: couponCode,
+//       discountType: discountType,
+//       discountValue: discountValue,
+//       maxUsage: maxUsage,
+//       usedCount: 0,
+//       expiresAt: expiresAt,
+//       status: "active"
+//     });
+//   }
 
   function setmaxusage(e){
     setMaxUsage(e.target.value)
     setForm({
-    code: couponCode,
-    discountType: "percentage",
-    discountValue: discountValue,
-    maxUsage: maxUsage,
-    usedCount: 0,
-    expiresAt: new Date().toISOString(),
-    status: "active"
-  })
+      code: couponCode,
+      // discountType: discountType,
+      // discountValue: discountValue,
+      maxUsage: maxUsage,
+      usedCount: 0,
+      expiresAt: expiresAt,
+      status: "active",
+    });
 }
 
   function setexpitydate(e){
     setExpiresAt(e.target.value)
     setForm({
     code: couponCode,
-    discountType: "percentage",
-    discountValue: discountValue,
+    // discountType: discountType,
+    // discountValue: discountValue,
     maxUsage: maxUsage,
     usedCount: 0,
-    expiresAt: new Date().toISOString(),
+    expiresAt: expiresAt,
     status: "active"
   })
 }
@@ -113,22 +128,40 @@ function Createcoupon() {
               />
             </div>
 
+            {/* Discount Type */}
+            {/* <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Discount Type
+              </label>
+              <select
+                name="discountType"
+                className="w-full border rounded px-4 py-2"
+                onChange={discountTypesel}
+                value={discountType}
+              >
+                <option value="percentage">Percentage (%)</option>
+                <option value="flat">Flat (₹)</option>
+              </select>
+            </div> */}
+{/* 
             <div className="space-y-2">
               <label
                 htmlFor="discount"
                 className="block text-sm font-medium text-gray-700"
               >
-                Discount (%)
+                Discount {discountType === "percentage" ? "(%)" : "(₹)"}
               </label>
               <input
                 type="number"
                 id="discount"
                 className="w-full border rounded px-4 py-2"
-                placeholder="e.g., 20"
+                placeholder={
+                  form.discountType === "percentage" ? "e.g., 20" : "e.g., 100"
+                }
                 onChange={setdiscountValue}
                 value={discountValue}
               />
-            </div>
+            </div> */}
 
             <div className="space-y-2">
               <label
