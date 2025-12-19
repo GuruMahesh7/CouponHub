@@ -3,7 +3,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "serverless deploy"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,11 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
-    "razorpay": "^2.9.6"
+    "razorpay": "^2.9.6",
+    "serverless-http": "^4.0.0"
+  },
+  "devDependencies": {
+    "serverless": "^4.28.0",
+    "serverless-offline": "^14.4.0"
   }
 }

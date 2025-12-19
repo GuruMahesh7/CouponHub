@@ -1,5 +1,6 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 function ViewUsers() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function ViewUsers() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch( `http://localhost:5000/api/coupons/view-users/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/coupons/view-users/${id}`, {
         method: "GET",
       });
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 function Dashboard() {
   const [couponsdata, setCouponsdata] = useState([]);
@@ -13,8 +14,8 @@ function Dashboard() {
     const fetchCoupons = async () => {
       try {
         const response = await axios.get(
-          "https://backend-1-9gjf.onrender.com/api/coupons"
-        ); 
+          `${API_BASE_URL}/api/coupons`
+        );
         setCouponsdata(response.data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
@@ -49,18 +50,18 @@ function Dashboard() {
   }, [couponsdata]);
 
   const handleDelete = async (id) => {
-  const confirm = window.confirm("Are you sure you want to delete this coupon?");
-  if (!confirm) return;
+    const confirm = window.confirm("Are you sure you want to delete this coupon?");
+    if (!confirm) return;
 
-  try {
-    await axios.delete(`http://localhost:5000/api/coupons/${id}`);
-    setCouponsdata((prev) => prev.filter((c) => c._id !== id));
-    alert("Coupon deleted successfully!");
-  } catch (err) {
-    console.error(err);
-    alert("Failed to delete coupon.");
-  }
-};
+    try {
+      await axios.delete(`${API_BASE_URL}/api/coupons/${id}`);
+      setCouponsdata((prev) => prev.filter((c) => c._id !== id));
+      alert("Coupon deleted successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete coupon.");
+    }
+  };
 
   return (
     <div className=" space-y-8 ml-65">
@@ -114,7 +115,7 @@ function Dashboard() {
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                   <h3 className="font-semibold text-lg">{coupon.code}</h3>
                   {new Date(coupon.expiresAt) < new Date() ||
-                  coupon.usedCount >= coupon.maxUsage ? (
+                    coupon.usedCount >= coupon.maxUsage ? (
                     <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                       expired
                     </span>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../config";
 
 function EditCoupon() {
   const { id } = useParams();
@@ -15,12 +16,12 @@ function EditCoupon() {
   useEffect(() => {
     const fetchCoupon = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/coupons/${id}`);
+        const res = await axios.get(`${API_BASE_URL}/api/coupons/${id}`);
         setForm({
           code: res.data.code,
           discountValue: res.data.discountValue,
           maxUsage: res.data.maxUsage,
-          expiresAt: res.data.expiresAt?.split("T")[0], 
+          expiresAt: res.data.expiresAt?.split("T")[0],
         });
       } catch (err) {
         console.error(err);
@@ -37,7 +38,7 @@ function EditCoupon() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/coupons/${id}`, form);
+      await axios.put(`${API_BASE_URL}/api/coupons/${id}`, form);
       alert("Coupon updated!");
       navigate("/dashboard");
     } catch (err) {
@@ -45,7 +46,6 @@ function EditCoupon() {
       alert("Update failed");
     }
   };
-
   return (
     <div className=" ml-65 py-8">
       <h1 className="text-2xl font-bold mb-4">Edit Coupon</h1>
