@@ -1,14 +1,15 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 
 
 function Createcoupon() {
   // const [discountValue, setDiscountValue]=useState(0)
-  const [couponCode, setCouponCode]=useState("")
+  const [couponCode, setCouponCode] = useState("")
   // const [discountType, setDiscountType]=useState("percentage") 
-  const [maxUsage, setMaxUsage]=useState(1)
-  const [expiresAt, setExpiresAt]=useState("")
+  const [maxUsage, setMaxUsage] = useState(1)
+  const [expiresAt, setExpiresAt] = useState("")
   const [form, setForm] = useState({
     code: "",
     discountType: "percentage",
@@ -19,20 +20,20 @@ function Createcoupon() {
     status: "active"
   });
 
-//   function setdiscountValue(e){
-//     setDiscountValue(e.target.value)
-//     setForm({
-//       code: couponCode,
-//       discountType: discountType,
-//       discountValue: discountValue,
-//       maxUsage: maxUsage,
-//       usedCount: 0,
-//       expiresAt: expiresAt,
-//       status: "active",
-//     });
-// }
+  //   function setdiscountValue(e){
+  //     setDiscountValue(e.target.value)
+  //     setForm({
+  //       code: couponCode,
+  //       discountType: discountType,
+  //       discountValue: discountValue,
+  //       maxUsage: maxUsage,
+  //       usedCount: 0,
+  //       expiresAt: expiresAt,
+  //       status: "active",
+  //     });
+  // }
 
-  function setcouponCode(e){
+  function setcouponCode(e) {
     setCouponCode(e.target.value)
     setForm({
       code: couponCode,
@@ -43,22 +44,22 @@ function Createcoupon() {
       expiresAt: expiresAt,
       status: "active",
     });
-}
+  }
 
-// function discountTypesel(e) {
-//     setDiscountType(e.target.value);
-//     setForm({
-//       code: couponCode,
-//       discountType: discountType,
-//       discountValue: discountValue,
-//       maxUsage: maxUsage,
-//       usedCount: 0,
-//       expiresAt: expiresAt,
-//       status: "active"
-//     });
-//   }
+  // function discountTypesel(e) {
+  //     setDiscountType(e.target.value);
+  //     setForm({
+  //       code: couponCode,
+  //       discountType: discountType,
+  //       discountValue: discountValue,
+  //       maxUsage: maxUsage,
+  //       usedCount: 0,
+  //       expiresAt: expiresAt,
+  //       status: "active"
+  //     });
+  //   }
 
-  function setmaxusage(e){
+  function setmaxusage(e) {
     setMaxUsage(e.target.value)
     setForm({
       code: couponCode,
@@ -69,36 +70,36 @@ function Createcoupon() {
       expiresAt: expiresAt,
       status: "active",
     });
-}
+  }
 
-  function setexpitydate(e){
+  function setexpitydate(e) {
     setExpiresAt(e.target.value)
     setForm({
-    code: couponCode,
-    // discountType: discountType,
-    // discountValue: discountValue,
-    maxUsage: maxUsage,
-    usedCount: 0,
-    expiresAt: expiresAt,
-    status: "active"
-  })
-}
+      code: couponCode,
+      // discountType: discountType,
+      // discountValue: discountValue,
+      maxUsage: maxUsage,
+      usedCount: 0,
+      expiresAt: expiresAt,
+      status: "active"
+    })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
 
-      const response = await axios.post("https://backend-1-9gjf.onrender.com/api/coupons/createcoupon", form);
+      const response = await axios.post(`${API_BASE_URL}/api/coupons/createcoupon`, form);
 
       alert(`Coupon "${response.data.code}" created successfully!`);
     } catch (error) {
       console.error("Error creating coupon:", error);
       alert("Failed to create coupon.");
     }
-};
+  };
 
-  
+
   return (
     <div className="ml-65">
       <div className="space-y-8 max-w-2xl">
@@ -143,7 +144,7 @@ function Createcoupon() {
                 <option value="flat">Flat (₹)</option>
               </select>
             </div> */}
-{/* 
+            {/* 
             <div className="space-y-2">
               <label
                 htmlFor="discount"
