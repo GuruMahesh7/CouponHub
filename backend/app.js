@@ -22,7 +22,7 @@ app.use(
 app.use(express.json());
 
 mongoose
-    .connect(process.env.MONGO_URI || "mongodb+srv://mongoguru:guru@77cluster0.xh9qpgp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+    .connect(process.env.MONGO_URI || "mongodb+srv://mongoguru:guru@cluster0.xh9qpgp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
         dbName: "testDB",
     })
     .then(() => console.log(" MongoDB connected"))
