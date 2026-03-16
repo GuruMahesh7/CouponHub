@@ -91,12 +91,14 @@ function Analytics() {
   };
 
   return (
-    <div className="px-4 sm:px-6 md:px-8 py-6 max-w-7xl mx-auto space-y-8 ml-65">
+    <div className="px-4 md:px-8 py-6 max-w-7xl mx-auto space-y-8 md:ml-64 transition-all pb-24 md:pb-8">
 
       <div className="space-y-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-1">Track coupon performance and usage metrics</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex flex-wrap items-center gap-2">
+            Analytics Dashboard <span className="text-xs sm:text-sm font-normal text-purple-600 bg-purple-100 px-2 py-1 rounded-full whitespace-nowrap">(Demo Version)</span>
+          </h1>
+          <p className="text-gray-600 mt-1 sm:mt-2">Track coupon performance and usage metrics</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -164,7 +166,13 @@ function Analytics() {
               </tr>
             </thead>
             <tbody>
-              {coupons.map((coupon) => {
+              {[...coupons]
+                .sort((a, b) => {
+                  if (a.status === 'active' && b.status === 'expired') return -1;
+                  if (a.status === 'expired' && b.status === 'active') return 1;
+                  return 0;
+                })
+                .map((coupon) => {
                 const successRate = ((coupon.usedCount / coupon.maxUsage) * 100).toFixed(0);
                 const revenue = coupon.totalRevenueImpact || 0;
 

@@ -1,209 +1,169 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 
-
 function Createcoupon() {
-  // const [discountValue, setDiscountValue]=useState(0)
-  const [couponCode, setCouponCode] = useState("")
-  // const [discountType, setDiscountType]=useState("percentage") 
-  const [maxUsage, setMaxUsage] = useState(1)
-  const [expiresAt, setExpiresAt] = useState("")
   const [form, setForm] = useState({
     code: "",
     discountType: "percentage",
-    discountValue: 0,
+    discountValue: "",
     maxUsage: 1,
     usedCount: 0,
     expiresAt: "",
     status: "active"
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
-  //   function setdiscountValue(e){
-  //     setDiscountValue(e.target.value)
-  //     setForm({
-  //       code: couponCode,
-  //       discountType: discountType,
-  //       discountValue: discountValue,
-  //       maxUsage: maxUsage,
-  //       usedCount: 0,
-  //       expiresAt: expiresAt,
-  //       status: "active",
-  //     });
-  // }
-
-  function setcouponCode(e) {
-    setCouponCode(e.target.value)
-    setForm({
-      code: couponCode,
-      // discountType: discountType,
-      // discountValue: discountValue,
-      maxUsage: maxUsage,
-      usedCount: 0,
-      expiresAt: expiresAt,
-      status: "active",
-    });
-  }
-
-  // function discountTypesel(e) {
-  //     setDiscountType(e.target.value);
-  //     setForm({
-  //       code: couponCode,
-  //       discountType: discountType,
-  //       discountValue: discountValue,
-  //       maxUsage: maxUsage,
-  //       usedCount: 0,
-  //       expiresAt: expiresAt,
-  //       status: "active"
-  //     });
-  //   }
-
-  function setmaxusage(e) {
-    setMaxUsage(e.target.value)
-    setForm({
-      code: couponCode,
-      // discountType: discountType,
-      // discountValue: discountValue,
-      maxUsage: maxUsage,
-      usedCount: 0,
-      expiresAt: expiresAt,
-      status: "active",
-    });
-  }
-
-  function setexpitydate(e) {
-    setExpiresAt(e.target.value)
-    setForm({
-      code: couponCode,
-      // discountType: discountType,
-      // discountValue: discountValue,
-      maxUsage: maxUsage,
-      usedCount: 0,
-      expiresAt: expiresAt,
-      status: "active"
-    })
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: name === "discountValue" || name === "maxUsage" ? Number(value) : value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-
+      setIsSubmitting(true);
+      setError(null);
       const response = await axios.post(`${API_BASE_URL}/api/coupons/createcoupon`, form);
-
       alert(`Coupon "${response.data.code}" created successfully!`);
+      // Reset form
+      setForm({
+        code: "",
+        discountType: "percentage",
+        discountValue: "",
+        maxUsage: 1,
+        usedCount: 0,
+        expiresAt: "",
+        status: "active"
+      });
     } catch (error) {
       console.error("Error creating coupon:", error);
-      alert("Failed to create coupon.");
+      setError("Failed to create coupon. Please check your backend connection.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-
   return (
-    <div className="ml-65">
-      <div className="space-y-8 max-w-2xl">
+    <div className="p-4 md:p-8 md:ml-64 transition-all pb-24 md:pb-8">
+      <div className="space-y-6 md:space-y-8 max-w-2xl mx-auto md:mx-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Create Coupon</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
+            Create Coupon <span className="text-xs sm:text-sm font-normal text-purple-600 bg-purple-100 px-2 py-1 rounded-full whitespace-nowrap">(Demo Version)</span>
+          </h1>
+          <p className="text-gray-600 mt-1 sm:mt-2">
             Fill in the details below to generate a new coupon code
           </p>
         </div>
 
+        {error && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md flex items-start">
+            <span className="text-red-500 text-xl mr-3">⚠️</span>
+            <div>
+              <h3 className="text-red-800 font-bold mb-1">Creation Failed</h3>
+              <p className="text-red-600 text-sm">{error}</p>
+            </div>
+          </div>
+        )}
+
         <div className="bg-white p-6 rounded-lg shadow">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-2">
-              <label
-                htmlFor="couponCode"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
                 Coupon Code
               </label>
               <input
                 type="text"
-                id="couponCode"
+                id="code"
+                name="code"
                 className="w-full border rounded px-4 py-2"
                 placeholder="e.g., SAVE20"
-                onChange={setcouponCode}
-                value={couponCode}
+                onChange={handleChange}
+                value={form.code}
+                required
               />
             </div>
 
-            {/* Discount Type */}
-            {/* <div className="space-y-2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Discount Type
               </label>
               <select
                 name="discountType"
                 className="w-full border rounded px-4 py-2"
-                onChange={discountTypesel}
-                value={discountType}
+                onChange={handleChange}
+                value={form.discountType}
+                required
               >
                 <option value="percentage">Percentage (%)</option>
                 <option value="flat">Flat (₹)</option>
               </select>
-            </div> */}
-            {/* 
+            </div>
+
             <div className="space-y-2">
-              <label
-                htmlFor="discount"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Discount {discountType === "percentage" ? "(%)" : "(₹)"}
+              <label htmlFor="discountValue" className="block text-sm font-medium text-gray-700">
+                Discount {form.discountType === "percentage" ? "(%)" : "(₹)"}
               </label>
               <input
                 type="number"
-                id="discount"
+                id="discountValue"
+                name="discountValue"
                 className="w-full border rounded px-4 py-2"
-                placeholder={
-                  form.discountType === "percentage" ? "e.g., 20" : "e.g., 100"
-                }
-                onChange={setdiscountValue}
-                value={discountValue}
+                placeholder={form.discountType === "percentage" ? "e.g., 20" : "e.g., 100"}
+                onChange={handleChange}
+                value={form.discountValue}
+                min="0"
+                required
               />
-            </div> */}
+            </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="maxUsage"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="maxUsage" className="block text-sm font-medium text-gray-700">
                 Maximum Uses
               </label>
               <input
                 type="number"
                 id="maxUsage"
+                name="maxUsage"
                 className="w-full border rounded px-4 py-2"
                 placeholder="e.g., 100"
-                onChange={setmaxusage}
-                value={maxUsage}
+                onChange={handleChange}
+                value={form.maxUsage}
+                min="1"
+                required
               />
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="expiryDate"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="expiresAt" className="block text-sm font-medium text-gray-700">
                 Expiry Date
               </label>
               <input
                 type="date"
-                id="expiryDate"
+                id="expiresAt"
+                name="expiresAt"
                 className="w-full border rounded px-4 py-2"
-                onChange={setexpitydate}
-                value={expiresAt}
+                onChange={handleChange}
+                value={form.expiresAt}
                 min={new Date().toISOString().split("T")[0]}
+                required
               />
             </div>
 
             <button
               type="submit"
-              onClick={handleSubmit}
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:bg-blue-400 flex justify-center items-center"
             >
-              Create Coupon
+              {isSubmitting ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+              ) : (
+                "Create Coupon"
+              )}
             </button>
           </form>
         </div>
@@ -212,4 +172,4 @@ function Createcoupon() {
   );
 }
 
-export default Createcoupon
+export default Createcoupon;
